@@ -1,35 +1,47 @@
 #!/usr/bin/env python3
 """
-make_rupture_map.py — draw iso-life (hours) curves vs temperature for IN718 using LMP fit
-Outputs: reports/figures/in718_rupture_map_isolife.png
+Draw iso-life curves using models/calibrations/in718_rupture_best.yaml.
+Supports: LMP-Linear, LMP-Quadratic, MansonHaferd.
 """
-import numpy as np, yaml, matplotlib.pyplot as plt
+import yaml, numpy as np, matplotlib.pyplot as plt
 
-def load_params(path="models/calibrations/in718_lmp.yaml"):
-    d = yaml.safe_load(open(path)); p = d["parameters"]
-    return p["alpha"], p["beta"], p["C"], p.get("scale", 1e-3)
+def load_best(path="models/calibrations/in718_rupture_best.yaml"):
+    d = yaml.safe_load(open(path, "r"))
+    return d["model"], d["parameters"]
 
-def sigma_from_T_tr(T_K, tr_h, alpha, beta, C, scale):
-    LMP_scaled = scale * T_K * (C + np.log10(tr_h))
-    log10_sigma = alpha + beta * LMP_scaled
-    return 10.0 ** log10_sigma
+def sigma_from_T_tr(model, params, T_K, tr_h):
+    name = model
+    if name == "LMP_linear":
+        alpha, beta, C, scale = params["alpha"], params["beta"], params["C"], params.get("scale", 1e-3)
+        P = scale * (T_K * (C + np.log10(tr_h)))
+        log10_sigma = alpha + beta * P
+        return 10.0**log10_sigma
+    if name == "LMP_quadratic":
+        a, b, c, C, scale = params["a"], params["b"], params["c"], params["C"], params.get("scale",1e-3)
+        P = scale * (T_K * (C + np.log10(tr_h)))
+        log10_sigma = a + b*P + c*(P**2)
+        return 10.0**log10_sigma
+    if name == "MansonHaferd":
+        A, B, Tstar, Cstar = params["A"], params["B"], params["T_star"], params["C_star"]
+        P = (T_K - Tstar) * (np.log10(tr_h) + Cstar)
+        log10_sigma = A + B * P
+        return 10.0**log10_sigma
+    raise ValueError(f"Unsupported model: {name}")
 
 def main():
-    alpha, beta, C, scale = load_params()
-    T_C = np.linspace(500, 750, 200)      # adjust range as needed
+    model, params = load_best()
+    T_C = np.linspace(500, 750, 220)
     T_K = T_C + 273.15
-    lives_h = [10, 100, 1e3, 1e4, 5e4]    # iso-life lines (hours)
-
-    for tr in lives_h:
-        sigma = sigma_from_T_tr(T_K, tr, alpha, beta, C, scale)
+    lives = [10, 100, 1e3, 1e4, 5e4]
+    for tr in lives:
+        sigma = sigma_from_T_tr(model, params, T_K, tr)
         plt.plot(T_C, sigma, label=f"{tr:g} h")
-
     plt.xlabel("Temperature [°C]")
     plt.ylabel("Stress [MPa]")
-    plt.title("IN718 Creep–Rupture Map (Larson–Miller)")
+    plt.title(f"IN718 Creep–Rupture Map ({model})")
     plt.legend(title="Iso-life")
     plt.grid(True, which="both", alpha=0.3)
-    plt.savefig("reports/figures/in718_rupture_map_isolife.png", dpi=180, bbox_inches="tight")
+    plt.savefig("reports/figures/in718_rupture_map_best.png", dpi=180, bbox_inches="tight")
     plt.show()
 
 if __name__ == "__main__":

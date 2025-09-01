@@ -1,0 +1,22 @@
+model: MansonHaferd
+parameters:
+  A: 3.185323138646162
+  B: -0.000506355007124284
+  T_star: 734.521723686055
+  C_star: 1.9127763905932147
+meta:
+  fit_datetime: '2025-09-01T22:18:17.790771Z'
+  csv_source: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/data/processed/in718_creep_rupture_isothermal_SI.csv
+  units:
+    stress: MPa
+    temperature: K (from C)
+    t_r: hours
+  metrics:
+    R2_log: 0.8471578533565357
+    RMSE_dec: 0.38870579955721973
+    MAE_dec: 0.3240583838587625
+    within2: 0.4642857142857143
+    within3: 0.7857142857142857
+    AICc: -43.17709073231801
+    CV_RMSE_dec: 1.8367327601720582
+    CV_MAE_dec: 1.2212353863013914

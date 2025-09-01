@@ -1,0 +1,23 @@
+model: LMP_quadratic
+parameters:
+  a: -1.4020513072110767
+  b: 0.4500092703694796
+  c: -0.011444801183222782
+  C: 23.602731497977977
+  scale: 0.001
+meta:
+  fit_datetime: '2025-09-01T22:18:17.118729Z'
+  csv_source: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/data/processed/in718_creep_rupture_isothermal_SI.csv
+  units:
+    stress: MPa
+    temperature: K (from C)
+    t_r: hours
+  metrics:
+    R2_log: .nan
+    RMSE_dec: .nan
+    MAE_dec: .nan
+    within2: 0.8928571428571429
+    within3: 0.9285714285714286
+    AICc: .nan
+    CV_RMSE_dec: .nan
+    CV_MAE_dec: .nan

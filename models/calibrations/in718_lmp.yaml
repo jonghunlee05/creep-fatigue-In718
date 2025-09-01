@@ -10,7 +10,7 @@ meta:
     stress: MPa
     temperature: K (converted from C)
     t_r: hours
-  fit_datetime: '2025-09-01T21:58:58.940195Z'
+  fit_datetime: '2025-09-01T22:14:20.416515Z'
   csv_source: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/data/processed/in718_creep_rupture_isothermal_SI.csv
   columns:
     temperature_C: temperature_C
