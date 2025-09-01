@@ -1,0 +1,194 @@
+version: 0.1.0
+project: "High-Temperature Alloys: Creep & Fatigue Life Prediction (Inconel 718)"
+units_base: "SI"
+
+# Optional: set a base dir for convenience in your tooling
+base_dirs:
+  raw: "data/raw"
+  processed: "data/processed"
+  figures: "reports/figures"
+
+sources:
+  nasa_in718_19960008692:
+    title: "Probabilistic Material Strength Degradation Model for Inconel 718"
+    org: "NASA Technical Reports Server (NTRS)"
+    report_id: "19960008692"
+    url: "https://ntrs.nasa.gov/citations/19960008692"
+    year: 1996
+    license: "Likely Public Domain (US Gov work) — verify on report"
+  special_metals_in718_datasheet:
+    title: "INCONEL® Alloy 718 Technical Bulletin (Table 33)"
+    org: "Special Metals"
+    url: "https://www.specialmetals.com" # exact PDF in source notes; used only as cross-check
+    year: 2007
+    license: "Copyright © Special Metals — consult usage terms"
+
+datasets:
+
+  # =========================
+  # FATIGUE — PROCESSED (SI)
+  # =========================
+
+  - id: in718_fatigue_HCF_isothermal_SI
+    kind: fatigue
+    subtype: HCF
+    control_mode: STRESS
+    description: >
+      Rotating-beam isothermal S–N data (fatigue strength at fixed N) for IN718;
+      temperatures ~24°C, 538°C, 649°C; converted to MPa and °C.
+      Primary tabulation: NASA Appendix A.2; values match Special Metals Table 33.
+    path: "data/processed/in718_fatigue_HCF_isothermal_SI.csv"
+    source_primary: nasa_in718_19960008692
+    source_notes:
+      - "NASA Appendix A.2 — High-Cycle Mechanical Fatigue Data (°F, psi → converted)."
+      - "Cross-checked against Special Metals Table 33 (rotating-beam)."
+    schema:
+      columns:
+        - {name: test_type,              type: string,  description: "HCF"}
+        - {name: control_mode,           type: string,  description: "STRESS"}
+        - {name: temperature_C,          type: float,   unit: "°C"}
+        - {name: cycles_to_failure,      type: integer, unit: "cycles"}
+        - {name: stress_amplitude_MPa,   type: float,   unit: "MPa"}
+        - {name: R_ratio,                type: float,   description: "Assumed −1 for rotating-beam if not given"}
+        - {name: frequency_Hz,           type: float,   nullable: true}
+        - {name: waveform,               type: string,  nullable: true}
+        - {name: source,                 type: string}
+    tags: [fatigue, HCF, isothermal, SI, in718]
+    checksum_sha256: null   # fill via script
+    added: "2025-09-01"
+    updated: "2025-09-01"
+
+  - id: in718_fatigue_LCF_isothermal_537C_SI
+    kind: fatigue
+    subtype: LCF
+    control_mode: STRAIN
+    description: >
+      Isothermal ε–N at 1000°F ≈ 537.8°C (NASA Appendix A.3).
+      Table reports elastic strain amplitude; total/plastic left blank for now.
+    path: "data/processed/in718_fatigue_LCF_isothermal_537C_SI.csv"
+    source_primary: nasa_in718_19960008692
+    source_notes:
+      - "NASA Appendix A.3 — Low-Cycle Mechanical Fatigue Data (°F, %elastic → converted)."
+    schema:
+      columns:
+        - {name: test_type,                  type: string,  description: "LCF"}
+        - {name: control_mode,               type: string,  description: "STRAIN"}
+        - {name: temperature_C,              type: float,   unit: "°C"}
+        - {name: elastic_strain_amplitude,   type: float,   unit: "strain"}
+        - {name: total_strain_amplitude,     type: float,   unit: "strain", nullable: true}
+        - {name: plastic_strain_amplitude,   type: float,   unit: "strain", nullable: true}
+        - {name: cycles_to_failure,          type: integer, unit: "cycles"}
+        - {name: R_ratio,                    type: float,   nullable: true}
+        - {name: frequency_Hz,               type: float,   nullable: true}
+        - {name: waveform,                   type: string,  nullable: true}
+        - {name: source,                     type: string}
+    tags: [fatigue, LCF, isothermal, SI, in718]
+    checksum_sha256: null
+    added: "2025-09-01"
+    updated: "2025-09-01"
+
+  - id: in718_fatigue_TMF_316C_649C_SI
+    kind: fatigue
+    subtype: TMF
+    control_mode: STRAIN
+    description: >
+      Thermal-mechanical fatigue cycling 600↔1200°F (≈316↔649°C), mean ≈482°C, in-phase (IP);
+      NASA Appendix A.4; kept for advanced modeling/validation.
+    path: "data/processed/in718_fatigue_TMF_316C_649C_SI.csv"
+    source_primary: nasa_in718_19960008692
+    source_notes:
+      - "NASA Appendix A.4 — Thermal Fatigue Data (unitless strain amplitude; °F → °C)."
+    schema:
+      columns:
+        - {name: test_type,             type: string,  description: "TMF"}
+        - {name: control_mode,          type: string,  description: "STRAIN"}
+        - {name: temp_min_C,            type: float,   unit: "°C"}
+        - {name: temp_max_C,            type: float,   unit: "°C"}
+        - {name: mean_temp_C,           type: float,   unit: "°C"}
+        - {name: total_strain_amplitude,type: float,   unit: "strain"}
+        - {name: plastic_strain_amplitude,type: float, unit: "strain", nullable: true}
+        - {name: cycles_to_failure,     type: integer, unit: "cycles"}
+        - {name: reversals_to_failure,  type: integer, unit: "reversals", nullable: true}
+        - {name: phase,                 type: string,  description: "in-phase / out-of-phase"}
+        - {name: frequency_Hz,          type: float,   nullable: true}
+        - {name: source,                type: string}
+    tags: [fatigue, TMF, thermal, SI, in718]
+    checksum_sha256: null
+    added: "2025-09-01"
+    updated: "2025-09-01"
+
+  # =========================
+  # FATIGUE — RAW (as-is)
+  # =========================
+  - id: raw_in718_fatigue_HCF_rotatingbeam_NASA_A2
+    kind: fatigue_raw
+    path: "data/raw/in718_fatigue_HCF_NASA_A2_raw.csv"
+    source_primary: nasa_in718_19960008692
+    units: {temperature: "°F", strength: "psi"}
+    checksum_sha256: null
+
+  - id: raw_in718_fatigue_LCF_isothermal_1000F_NASA_A3
+    kind: fatigue_raw
+    path: "data/raw/in718_fatigue_LCF_isothermal_1000F_NASA_A3_raw.csv"
+    source_primary: nasa_in718_19960008692
+    units: {temperature: "°F", strain: "percent"}
+    checksum_sha256: null
+
+  - id: raw_in718_fatigue_TMF_600F_1200F_NASA_A4
+    kind: fatigue_raw
+    path: "data/raw/in718_fatigue_TMF_600F_1200F_NASA_A4_raw.csv"
+    source_primary: nasa_in718_19960008692
+    units: {temperature: "°F", strain: "unitless"}
+    checksum_sha256: null
+
+  # =========================
+  # CREEP — PLACEHOLDERS
+  # (to be filled when we add creep rupture CSVs)
+  # =========================
+  - id: in718_creep_rupture_isothermal_SI
+    kind: creep
+    description: "Placeholder for σ–T–t_r rupture data (Larson–Miller / Norton fits)."
+    path: "data/processed/in718_creep_rupture_isothermal_SI.csv"
+    source_primary: null
+    schema:
+      columns:
+        - {name: temperature_C,      type: float, unit: "°C"}
+        - {name: stress_MPa,         type: float, unit: "MPa"}
+        - {name: time_to_rupture_h,  type: float, unit: "h"}
+        - {name: specimen_notes,     type: string, nullable: true}
+        - {name: source,             type: string}
+    checksum_sha256: null
+
+processing:
+  notes:
+    - "All processed fatigue datasets are in SI units (°C, MPa)."
+    - "HCF entries assume R≈−1 for rotating-beam unless specified."
+    - "LCF A.3 currently provides elastic strain amplitude; total/plastic may be estimated later."
+  conversions:
+    temperature:
+      from: "°F"
+      to: "°C"
+      formula: "C = (F - 32) * 5/9"
+    stress:
+      from: "psi"
+      to: "MPa"
+      factor: 0.006894757
+    strain_percent:
+      from: "%"
+      to: "strain"
+      factor: 0.01
+
+validation:
+  checks:
+    - "no_missing_required_columns"
+    - "nonnegative_cycles"
+    - "temperature_in_reasonable_range: [-100, 1200] °C"
+    - "stress_positive_for_HCF"
+    - "strain_amplitudes_between_0_and_0.05"
+
+# Optional: training splits / filters you might reuse
+views:
+  fatigue_isothermal_only:
+    include: [in718_fatigue_HCF_isothermal_SI, in718_fatigue_LCF_isothermal_537C_SI]
+  fatigue_all:
+    include: [in718_fatigue_HCF_isothermal_SI, in718_fatigue_LCF_isothermal_537C_SI, in718_fatigue_TMF_316C_649C_SI]
