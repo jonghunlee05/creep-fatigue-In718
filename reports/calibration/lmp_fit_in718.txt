@@ -1,0 +1,7 @@
+Larson–Miller rupture — Inconel 718
+alpha = 4.925022
+beta  = -9.017539e-02
+C     = 23.462
+Figure 1: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/reports/figures/lmp_sigma_vs_LMP.png
+Figure 2: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/reports/figures/lmp_pred_vs_meas_tr.png
+YAML saved to: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/models/calibrations/in718_lmp.yaml

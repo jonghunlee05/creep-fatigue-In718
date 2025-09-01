@@ -1,0 +1,18 @@
+parameters:
+  alpha: 4.925021593102143
+  beta: -0.09017538929393477
+  C: 23.46174484532384
+  scale: 0.001
+meta:
+  model: "Larson\u2013Miller rupture"
+  material: Inconel 718
+  units:
+    stress: MPa
+    temperature: K (converted from C)
+    t_r: hours
+  fit_datetime: '2025-09-01T21:58:58.940195Z'
+  csv_source: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/data/processed/in718_creep_rupture_isothermal_SI.csv
+  columns:
+    temperature_C: temperature_C
+    stress: stress_MPa
+    t_r: time_to_rupture_h
