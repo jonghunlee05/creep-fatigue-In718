@@ -1,0 +1,13 @@
+test_type,control_mode,temperature_C,cycles_to_failure,stress_amplitude_MPa,R_ratio,frequency_Hz,waveform,source
+HCF,STRESS,23.9,100000,910.1,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,23.9,1000000,696.4,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,23.9,10000000,634.3,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,23.9,100000000,620.5,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,537.8,100000,765.3,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,537.8,1000000,703.3,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,537.8,10000000,655.0,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,537.8,100000000,620.5,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,648.9,100000,689.5,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,648.9,1000000,648.1,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,648.9,10000000,606.7,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33
+HCF,STRESS,648.9,100000000,496.4,-1,,rotating-beam,NASA NTRS 19960008692 Table A.2; Special Metals Table 33

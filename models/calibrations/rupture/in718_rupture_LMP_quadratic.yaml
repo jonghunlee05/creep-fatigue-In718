@@ -6,18 +6,18 @@ parameters:
   C: 23.602731497977977
   scale: 0.001
 meta:
-  fit_datetime: '2025-09-01T22:18:17.118729Z'
+  fit_datetime: '2025-09-02T14:36:45.280854Z'
   csv_source: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/data/processed/in718_creep_rupture_isothermal_SI.csv
   units:
     stress: MPa
     temperature: K (from C)
     t_r: hours
   metrics:
-    R2_log: .nan
-    RMSE_dec: .nan
-    MAE_dec: .nan
-    within2: 0.8928571428571429
-    within3: 0.9285714285714286
-    AICc: .nan
-    CV_RMSE_dec: .nan
-    CV_MAE_dec: .nan
+    R2_log: -1.0088750370686141
+    RMSE_dec: 1.4092106515858882
+    MAE_dec: 0.8279308704464972
+    within2: 0.6428571428571429
+    within3: 0.6785714285714286
+    AICc: 28.94879509420882
+    CV_RMSE_dec: 0.9174934525303082
+    CV_MAE_dec: 0.5500278085007373

@@ -1,0 +1,7 @@
+# Source: NASA NTRS, Appendix Table A.4 — Thermal Fatigue Data
+# Units: strain amplitudes are unitless; temperatures in °F
+cycles_to_failure,reversals_to_failure,total_strain_amplitude,plastic_strain_amplitude,temp_min_F,temp_max_F,mean_temp_F,phase
+45,90,0.0100,0.0050,600,1200,900,IP
+140,280,0.0075,0.0029,600,1200,900,IP
+750,1500,0.0050,0.0011,600,1200,900,IP
+9750,19500,0.0040,0.0003,600,1200,900,IP

@@ -1,0 +1,16 @@
+# Source: NASA NTRS, "Probabilistic Material Strength Degradation Model for Inconel 718"
+# Appendix Table A.2 — High-Cycle Mechanical Fatigue Data (fatigue strength at fixed N)
+# Units: temperature in °F, fatigue_strength in psi
+temperature_F,cycles_to_failure,fatigue_strength_psi
+75,100000,132000
+75,1000000,101000
+75,10000000,92000
+75,100000000,90000
+1000,100000,111000
+1000,1000000,102000
+1000,10000000,95000
+1000,100000000,90000
+1200,100000,100000
+1200,1000000,94000
+1200,10000000,88000
+1200,100000000,72000

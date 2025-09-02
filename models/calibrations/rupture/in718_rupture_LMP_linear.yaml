@@ -5,7 +5,7 @@ parameters:
   C: 23.46174381932087
   scale: 0.001
 meta:
-  fit_datetime: '2025-09-01T22:18:16.509461Z'
+  fit_datetime: '2025-09-02T14:36:44.550250Z'
   csv_source: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/data/processed/in718_creep_rupture_isothermal_SI.csv
   units:
     stress: MPa

@@ -1,6 +1,6 @@
 Model comparison (lower is better for errors/AICc)
 
 model             R2_log   RMSE_dec  within×2  within×3       AICc    CV_RMSE
-LMP_linear         0.801      0.444      57.1      78.6     -38.48      0.824
-LMP_quadratic        nan        nan      89.3      92.9        nan        nan
 MansonHaferd       0.847      0.389      46.4      78.6     -43.18      1.837
+LMP_linear         0.801      0.444      57.1      78.6     -38.48      0.824
+LMP_quadratic     -1.009      1.409      64.3      67.9      28.95      0.917

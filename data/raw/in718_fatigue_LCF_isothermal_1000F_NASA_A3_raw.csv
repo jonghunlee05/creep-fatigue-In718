@@ -1,0 +1,15 @@
+# Source: NASA NTRS, Appendix Table A.3 — Low-Cycle Mechanical Fatigue Data
+# Test temperature fixed at 1000 °F; strain-controlled; table gives elastic strain (%)
+# Units: temperature in °F, elastic_strain in percent (%)
+temperature_F,cycles_to_failure,elastic_strain_percent
+1000,200,1.35
+1000,400,1.25
+1000,600,1.20
+1000,800,1.15
+1000,1000,1.10
+1000,2000,1.05
+1000,4000,1.00
+1000,6000,0.95
+1000,8000,0.92
+1000,10000,0.90
+1000,20000,0.85
