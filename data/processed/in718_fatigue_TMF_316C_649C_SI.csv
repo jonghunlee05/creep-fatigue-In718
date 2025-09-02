@@ -1,0 +1,5 @@
+test_type,control_mode,temp_min_C,temp_max_C,mean_temp_C,total_strain_amplitude,plastic_strain_amplitude,cycles_to_failure,reversals_to_failure,phase,frequency_Hz,source
+TMF,STRAIN,315.6,648.9,482.2,0.0100,0.0050,45,90,in-phase,,NASA NTRS 19960008692 Appendix A.4
+TMF,STRAIN,315.6,648.9,482.2,0.0075,0.0029,140,280,in-phase,,NASA NTRS 19960008692 Appendix A.4
+TMF,STRAIN,315.6,648.9,482.2,0.0050,0.0011,750,1500,in-phase,,NASA NTRS 19960008692 Appendix A.4
+TMF,STRAIN,315.6,648.9,482.2,0.0040,0.0003,9750,19500,in-phase,,NASA NTRS 19960008692 Appendix A.4

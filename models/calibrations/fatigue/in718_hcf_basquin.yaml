@@ -1,0 +1,36 @@
+model: "Basquin S\u2013N (per temperature)"
+material: Inconel 718
+equation: log10(Nf) = a(T) - k(T)*log10(stress_MPa)
+parameters:
+  '23.9':
+    a: -15.414270972517343
+    k: -50.41905135276849
+  '537.8':
+    a: -32.56924313813413
+    k: -98.8334412844624
+  '648.9':
+    a: -19.85903828013814
+    k: -61.752720185815726
+meta:
+  fit_datetime: '2025-09-02T14:47:40.184152Z'
+  csv_source: /Users/justin/Desktop/dev_file/Material Science/creep-fatigue-In718/data/processed/in718_fatigue_HCF_isothermal_SI.csv
+  units:
+    stress: MPa
+    temperature: "\xB0C"
+    Nf: cycles
+  metrics_by_temperature:
+    '23.9':
+      R2_log: -11871.234728827558
+      RMSE_dec: 121.82074294238419
+      within2: 0.0
+      within3: 0.0
+    '537.8':
+      R2_log: -46527.168027304266
+      RMSE_dec: 241.16428017874108
+      within2: 0.0
+      within3: 0.0
+    '648.9':
+      R2_log: -16939.48435641209
+      RMSE_dec: 145.5184024290918
+      within2: 0.0
+      within3: 0.0

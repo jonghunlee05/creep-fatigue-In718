@@ -1,0 +1,24 @@
+heat_treatment,temperature_C,temperature_K,inv_temperature_1_per_K,stress_MPa,strain_rate_per_hr,strain_rate_per_s,source
+A,650,923.15,0.001083247576,551,1.3e-06,3.611111111e-10,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,650,923.15,0.001083247576,551,6e-07,1.666666667e-10,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,650,923.15,0.001083247576,620,3e-06,8.333333333e-10,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,650,923.15,0.001083247576,620,4.5e-06,1.25e-09,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,650,923.15,0.001083247576,689,1.39e-05,3.861111111e-09,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,650,923.15,0.001083247576,689,5.3e-05,1.472222222e-08,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,650,923.15,0.001083247576,724,4.4e-05,1.222222222e-08,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,650,923.15,0.001083247576,724,0.0001,2.777777778e-08,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,704,977.15,0.001023373363,483,7.5e-06,2.083333333e-09,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,704,977.15,0.001023373363,483,9e-06,2.5e-09,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,704,977.15,0.001023373363,517,1.4e-05,3.888888889e-09,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,704,977.15,0.001023373363,517,3.26e-05,9.055555556e-09,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,704,977.15,0.001023373363,551,0.000164,4.555555556e-08,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,704,977.15,0.001023373363,551,0.000123,3.416666667e-08,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,704,977.15,0.001023373363,620,0.000293,8.138888889e-08,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,704,977.15,0.001023373363,620,0.000415,1.152777778e-07,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,760,1033.15,0.000967912257,483,0.0008,2.222222222e-07,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,760,1033.15,0.000967912257,483,0.00176,4.888888889e-07,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,760,1033.15,0.000967912257,345,1.42e-05,3.944444444e-09,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,760,1033.15,0.000967912257,345,2.2e-05,6.111111111e-09,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+A,760,1033.15,0.000967912257,276,1.8e-06,5e-10,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,760,1033.15,0.000967912257,276,2.6e-06,7.222222222e-10,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
+B,760,1033.15,0.000967912257,413,0.000192,5.333333333e-08,Hayes 1991, Superalloys 718/625 & Derivatives, Table III
