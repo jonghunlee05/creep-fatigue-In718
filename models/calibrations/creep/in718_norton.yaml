@@ -1,0 +1,19 @@
+model: norton
+units:
+  stress: MPa
+  temperature: K
+  rate: 1/s
+params:
+  A: 4.9777669327628466e-09
+  n: 12.184366701751767
+  Q_J_per_mol: 611322.0684625201
+  R_J_per_molK: 8.314462618
+fit:
+  method: OLS on ln(rate) with [1, ln(sigma), -1/(R*T)]
+  date: '2025-09-02T16:26:03Z'
+  dataset: data/processed/in718_creep_steady_state_SI.csv
+  metrics:
+    R2_log10: 0.9246055610021259
+    RMSE_log10_rate: 0.25191674275145276
+    N: 23
+  N: 23

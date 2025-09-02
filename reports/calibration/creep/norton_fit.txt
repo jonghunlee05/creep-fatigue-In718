@@ -1,0 +1,15 @@
+Norton–Arrhenius fit summary
+============================
+Dataset: data/processed/in718_creep_steady_state_SI.csv
+Date   : 2025-09-02 16:26:03Z (UTC)
+
+Model: epsdot = A * sigma^n * exp(-Q/(R T))
+A   = 4.977767e-09 [1/s / MPa^n]
+n   = 12.184367 [-]
+Q   = 6.113221e+05 [J/mol]
+R   = 8.314462618 [J/(mol·K)]
+
+Metrics (on log10(rate))
+R^2             : 0.924606
+RMSE log10(rate): 0.251917
+N               : 23
