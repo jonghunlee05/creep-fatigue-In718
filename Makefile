@@ -1,4 +1,4 @@
-.PHONY: calibrate-creep calibrate-hcf calibrate-lcf rupture-fit predict-timefrac sweeps test
+.PHONY: calibrate-creep calibrate-hcf calibrate-lcf rupture-fit predict-timefrac sweeps test run-app
 
 calibrate-creep: ; python3 scripts/fit_norton_from_csv.py
 calibrate-hcf:   ; python3 scripts/fit_basquin_from_csv.py
@@ -13,3 +13,6 @@ sweeps:
 
 test:
 	python3 -m pytest -q
+
+run-app:
+	streamlit run app/LifeApp.py
