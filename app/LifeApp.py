@@ -8,12 +8,20 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
 
-from predict_time_fraction import (
-    _load_cm_params, _invert_cm_for_Nf,
-    _load_basquin_params, _basquin_Nf,
-    _load_norton_params, _norton_rate,
-    _rupture_time_from_yaml
-)
+# Import the module directly
+import importlib.util
+spec = importlib.util.spec_from_file_location("predict_time_fraction", os.path.join(os.path.dirname(__file__), '..', 'scripts', 'predict_time_fraction.py'))
+predict_time_fraction = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(predict_time_fraction)
+
+# Extract functions
+_load_cm_params = predict_time_fraction._load_cm_params
+_invert_cm_for_Nf = predict_time_fraction._invert_cm_for_Nf
+_load_basquin_params = predict_time_fraction._load_basquin_params
+_basquin_Nf = predict_time_fraction._basquin_Nf
+_load_norton_params = predict_time_fraction._load_norton_params
+_norton_rate = predict_time_fraction._norton_rate
+_rupture_time_from_yaml = predict_time_fraction._rupture_time_from_yaml
 
 # --- Load YAMLs ---
 def load_yaml(p: Path):
