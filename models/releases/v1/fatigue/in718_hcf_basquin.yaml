@@ -1,0 +1,16 @@
+model: basquin
+form: log10(Nf) = a - k * log10(sigma_a_MPa)
+units:
+  stress: MPa
+  life: cycles
+params:
+  a: 48.55361179915761
+  k: 14.901213787117845
+fit:
+  method: OLS in log10 space
+  date: '2025-09-04T09:29:04Z'
+  dataset: data/processed/in718_fatigue_HCF_isothermal_SI.csv
+  metrics:
+    R2_log10N: 0.6459927789254205
+    RMSE_log10N: 0.6652135193629368
+  N: 12

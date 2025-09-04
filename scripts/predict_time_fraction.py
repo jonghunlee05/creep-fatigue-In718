@@ -41,6 +41,7 @@ import math
 import yaml
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # -------------------- helpers --------------------
 def _ensure_dir(p: Path) -> None:
@@ -235,6 +236,10 @@ def _save_breakdown_figure(N: float, Nf: float, dc_per_cycle: float, out_png: Pa
     plt.savefig(out_png)
     plt.close()
 
+def _row_val(d, key, default=None): 
+    v = d.get(key, default)
+    return default if (v is None or (isinstance(v,float) and (v!=v))) else v
+
 # -------------------- main --------------------
 def main() -> None:
     ap = argparse.ArgumentParser(description="Predict life via time-fraction (fatigue + creep).")
@@ -258,7 +263,56 @@ def main() -> None:
     # Outputs
     ap.add_argument("--fig", type=Path, default=Path("reports/figures/time_fraction/time_fraction_breakdown.png"))
     ap.add_argument("--debug", action="store_true")
+    # Batch mode
+    ap.add_argument("--csv_in", type=Path, help="Batch input CSV: columns like T_K, eps_total, sigma_MPa, t_hold_s, fatigue_model, sigma_a_MPa, creep_damage, epsilon_crit")
+    ap.add_argument("--csv_out", type=Path, help="Where to write results CSV")
     args = ap.parse_args()
+
+    # Batch mode handler
+    if args.csv_in:
+        df = pd.read_csv(args.csv_in)
+        rows = []
+        for _, r in df.iterrows():
+            T_K = float(_row_val(r, "T_K", args.T_K))
+            fatigue = str(_row_val(r, "fatigue_model", args.fatigue_model)).lower()
+            eps_total = _row_val(r, "eps_total", None)
+            sigma_a = _row_val(r, "sigma_a_MPa", None)
+            sigma_hold = _row_val(r, "sigma_MPa", None)
+            t_hold_s = float(_row_val(r, "t_hold_s", 0.0))
+            creep_mode = str(_row_val(r, "creep_damage", args.creep_damage)).lower()
+            eps_crit = float(_row_val(r, "epsilon_crit", args.epsilon_crit))
+
+            # compute N (reuse your existing functions)
+            if fatigue == "lcf":
+                if eps_total is None: raise SystemExit("CSV row missing eps_total for LCF.")
+                cm = _load_cm_params(args.coffin, T_K=T_K)
+                Nf = _invert_cm_for_Nf(float(eps_total), cm)
+            else:
+                if sigma_a is None: raise SystemExit("CSV row missing sigma_a_MPa for HCF.")
+                bp = _load_basquin_params(args.basquin, T_K=T_K)
+                Nf = _basquin_Nf(float(sigma_a), bp)
+
+            dc = 0.0
+            if t_hold_s > 0 and sigma_hold is not None:
+                if creep_mode == "rupture":
+                    tr = _rupture_time_from_yaml(args.rupture, float(sigma_hold), T_K)
+                    dc = t_hold_s / tr
+                else:
+                    nt = _load_norton_params(args.norton)
+                    edot = _norton_rate(float(sigma_hold), T_K, nt)
+                    dc = (edot * t_hold_s) / eps_crit
+
+            N = 1.0 / ((1.0/Nf) + dc)
+            rows.append({**r.to_dict(), "N_pred_cycles": N, "Nf_fatigue_cycles": Nf, "Df": N/Nf, "Dc": N*dc})
+
+        out = pd.DataFrame(rows)
+        if args.csv_out:
+            args.csv_out.parent.mkdir(parents=True, exist_ok=True)
+            out.to_csv(args.csv_out, index=False)
+            print(f"Wrote {args.csv_out}")
+        else:
+            print(out.head())
+        return
 
     T_K = float(args.T_K)
 

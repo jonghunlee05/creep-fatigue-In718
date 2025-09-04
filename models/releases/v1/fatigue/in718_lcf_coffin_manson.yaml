@@ -1,0 +1,20 @@
+model: coffin_manson
+form: Delta_eps/2 = (sigma_f'/E)*(2N)^b + eps_f'*(2N)^c
+units:
+  strain: unitless
+  life: cycles
+  E: GPa
+fit:
+  method: OLS in log10 space (separate elastic/plastic when available)
+  date: '2025-09-04T10:56:55Z'
+  dataset: data/processed/in718_fatigue_LCF_isothermal_537C_SI.csv
+  metrics:
+    R2_log10: 0.9906452499843984
+    RMSE_log10_strain: 0.01489601895288878
+  N: 4
+  mode: both_terms
+params:
+  log10_sigmaf_over_E: -2.2000170857178802
+  b: -0.05720968856464134
+  log10_epsf: -1.263742337682868
+  c: -0.5279237214288444
