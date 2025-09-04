@@ -1,6 +1,0 @@
-HCF Basquin — per-temperature metrics
-
-     T_C   R2_log   RMSE_dec  within×2  within×3
-    23.9  -11871.235    121.821       0.0       0.0
-   537.8  -46527.168    241.164       0.0       0.0
-   648.9  -16939.484    145.518       0.0       0.0
