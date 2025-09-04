@@ -134,79 +134,89 @@ def _norton_rate(stress_MPa: float, T_K: float, p: NortonParams) -> float:
     return p.A * (stress_MPa ** p.n) * math.exp(-p.Q / (p.R * T_K))
 
 # -------------------- rupture: LMP / Manson–Haferd --------------------
-def _try_keys(d: Dict[str, Any], *candidates: str) -> Optional[float]:
-    for k in candidates:
-        if k in d: return float(d[k])
-    # case-insensitive
-    lower = {k.lower(): k for k in d.keys()}
-    for k in candidates:
-        if k.lower() in lower:
-            return float(d[lower[k.lower()]])
-    return None
 
-def _rupture_time_LMP(params: Dict[str, Any], sigma_MPa: float, T_K: float) -> float:
+def _get_param_block(y: Dict[str, Any]) -> Dict[str, Any]:
+    """Support both {'params':...} and your {'parameters':...} schema."""
+    if isinstance(y, dict):
+        if "params" in y and isinstance(y["params"], dict):
+            return y["params"]
+        if "parameters" in y and isinstance(y["parameters"], dict):
+            return y["parameters"]
+    return {}
+
+def _rupture_time_LMP_from_params(params: Dict[str, Any], sigma_MPa: float, T_K: float) -> float:
     """
-    LMP linear:      log10 σ = α + β P,  P = 1e-3 T (C + log10 tr)
-    LMP quadratic:   log10 σ = a + b P + c P^2
+    LMP forms used in your fitter (t_r in HOURS):
+      linear   : log10(sigma) = alpha + beta * P
+      quadratic: log10(sigma) = a + b*P + c*P^2
+      with P = scale * T * (C + log10 t_r), where 'scale' is stored in YAML (usually 1e-3)
+    Returns rupture time in **seconds** (converted from hours).
     """
+    scale = float(params.get("scale", 1e-3))
     log10sigma = math.log10(sigma_MPa)
-    # linear form
-    alpha = _try_keys(params, "alpha", "A", "a0")
-    beta  = _try_keys(params, "beta", "B", "b1")
-    C     = _try_keys(params, "C", "C_const", "C0")
-    a = _try_keys(params, "a"); b = _try_keys(params, "b"); c = _try_keys(params, "c")
 
-    if alpha is not None and beta is not None and C is not None:
+    # Linear
+    if all(k in params for k in ("alpha", "beta", "C")):
+        alpha, beta, C = float(params["alpha"]), float(params["beta"]), float(params["C"])
         P = (log10sigma - alpha) / beta
-        log10tr = (P / (1e-3 * T_K)) - C
-        return 10.0 ** log10tr
+        log10tr_h = (P / (scale * T_K)) - C
+        return (10.0 ** log10tr_h) * 3600.0  # hours -> seconds
 
-    if a is not None and b is not None and c is not None and C is not None:
-        # Solve c P^2 + b P + (a - log10sigma) = 0, choose positive/real root with P>0
+    # Quadratic
+    if all(k in params for k in ("a", "b", "c", "C")):
+        a, b, c, C = float(params["a"]), float(params["b"]), float(params["c"]), float(params["C"])
+        # Solve a + bP + cP^2 = log10sigma  → cP^2 + bP + (a - log10sigma)=0
         A = c; B = b; CC = a - log10sigma
         disc = B*B - 4*A*CC
         if disc < 0:
             raise ValueError("LMP quadratic: negative discriminant; check parameters.")
-        r1 = (-B + math.sqrt(disc)) / (2*A)
-        r2 = (-B - math.sqrt(disc)) / (2*A)
-        P = max(r1, r2)  # pick larger root (usually the physical one)
-        log10tr = (P / (1e-3 * T_K)) - C
-        return 10.0 ** log10tr
+        # choose the physically reasonable root (larger P typically)
+        P = max(( -B + math.sqrt(disc) ) / (2*A), ( -B - math.sqrt(disc) ) / (2*A))
+        log10tr_h = (P / (scale * T_K)) - C
+        return (10.0 ** log10tr_h) * 3600.0  # hours -> seconds
 
-    raise ValueError("Unrecognized LMP parameter set. Expected (alpha,beta,C) or (a,b,c,C).")
+    raise ValueError("LMP params missing required keys.")
 
-def _rupture_time_MH(params: Dict[str, Any], sigma_MPa: float, T_K: float) -> float:
+def _rupture_time_MH_from_params(params: Dict[str, Any], sigma_MPa: float, T_K: float) -> float:
     """
-    Manson–Haferd:
-      log10 σ = A + B * ((T - T*) * (log10 tr + C*))
-      → log10 tr = ((log10 σ - A)/B)/(T - T*) - C*
+    Your Manson–Haferd (t_r in HOURS):
+      log10 sigma = A + B * ((T - T*) * (log10 t_r + C*))
+      → log10 t_r = ((log10 sigma - A)/B)/(T - T*) - C*
+    Returns **seconds**.
     """
-    A = _try_keys(params, "A", "a")
-    B = _try_keys(params, "B", "b")
-    Tstar = _try_keys(params, "T_star", "T*", "Tstar")
-    Cstar = _try_keys(params, "C_star", "C*", "Cstar")
-    if None in (A, B, Tstar, Cstar):
-        raise ValueError("Manson–Haferd parameters incomplete.")
-    numerator = (math.log10(sigma_MPa) - A) / B
-    denom = (T_K - Tstar)
-    if abs(denom) < 1e-9:
-        raise ValueError("Manson–Haferd: T very close to T*; numerical issue.")
-    log10tr = (numerator / denom) - Cstar
-    return 10.0 ** log10tr
+    # Accept your exact keys
+    if not all(k in params for k in ("A", "B", "T_star", "C_star")):
+        raise ValueError("Manson–Haferd parameters incomplete (need A, B, T_star, C_star).")
+    A, B, Tstar, Cstar = float(params["A"]), float(params["B"]), float(params["T_star"]), float(params["C_star"])
+    denom = B * (T_K - Tstar)
+    if abs(denom) < 1e-12:
+        raise ValueError("Manson–Haferd: T close to T_star; numerical issue.")
+    log10tr_h = ( (math.log10(sigma_MPa) - A) / denom ) - Cstar
+    return (10.0 ** log10tr_h) * 3600.0  # hours -> seconds
 
 def _rupture_time_from_yaml(y_path: Path, sigma_MPa: float, T_K: float) -> float:
+    """
+    Reads your rupture YAMLs (in718_rupture_*.yaml) and returns t_r in **seconds**.
+    Supports models: 'LMP_linear', 'LMP_quadratic', 'MansonHaferd'.
+    """
     y = _load_yaml(y_path)
-    model = str(y.get("model", "")).lower()
-    params = y.get("params", {})
-    if "manson" in model or "haferd" in model:
-        return _rupture_time_MH(params, sigma_MPa, T_K)
-    if "lmp" in model:
-        return _rupture_time_LMP(params, sigma_MPa, T_K)
-    # fallback: try both
-    try:
-        return _rupture_time_LMP(params, sigma_MPa, T_K)
-    except Exception:
-        return _rupture_time_MH(params, sigma_MPa, T_K)
+    model_raw = str(y.get("model", "")).strip()
+    model = model_raw.replace("-", "_").replace(" ", "_").lower()
+    params = _get_param_block(y)
+
+    if model in ("lmp_linear", "lmp_quadratic"):
+        return _rupture_time_LMP_from_params(params, sigma_MPa, T_K)
+
+    if model in ("mansonhaferd", "manson_haferd", "mansonhaferd"):
+        return _rupture_time_MH_from_params(params, sigma_MPa, T_K)
+
+    # If model name is missing in 'best' file, try to infer from keys.
+    if {"alpha","beta","C"} <= set(params.keys()) or {"a","b","c","C"} <= set(params.keys()):
+        return _rupture_time_LMP_from_params(params, sigma_MPa, T_K)
+    if {"A","B","T_star","C_star"} <= set(params.keys()):
+        return _rupture_time_MH_from_params(params, sigma_MPa, T_K)
+
+    raise ValueError(f"Unrecognized rupture YAML schema in {y_path}: model='{model_raw}', keys={list(params.keys())}")
 
 # -------------------- figure --------------------
 def _save_breakdown_figure(N: float, Nf: float, dc_per_cycle: float, out_png: Path) -> None:
