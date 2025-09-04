@@ -1,0 +1,20 @@
+Coffin–Manson LCF fit summary
+=============================
+Dataset: data/processed/in718_fatigue_LCF_isothermal_537C_SI.csv
+Date   : 2025-09-04 10:56:55Z (UTC)
+
+Model: Δε/2 = (σ'_f/E)*(2N)^b + ε'_f*(2N)^c
+Mode : both_terms
+
+Elastic term:
+  log10(σ'_f/E) = -2.200017
+  b             = -0.057210
+
+Plastic term:
+  log10(ε'_f)   = -1.263742
+  c             = -0.527924
+
+Metrics (on log10(strain amplitude))
+R^2                 : 0.990645
+RMSE log10(strain)  : 0.014896
+N                   : 4
