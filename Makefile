@@ -15,4 +15,4 @@ test:
 	python3 -m pytest -q
 
 run-app:
-	streamlit run app/LifeApp.py
+	python3 -m streamlit run app/LifeApp.py

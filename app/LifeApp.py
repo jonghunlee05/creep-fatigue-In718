@@ -5,7 +5,8 @@ import yaml, math
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
-sys.path.append("scripts")
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
 
 from predict_time_fraction import (
     _load_cm_params, _invert_cm_for_Nf,
