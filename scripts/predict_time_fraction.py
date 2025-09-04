@@ -244,7 +244,7 @@ def _row_val(d, key, default=None):
 def main() -> None:
     ap = argparse.ArgumentParser(description="Predict life via time-fraction (fatigue + creep).")
     # Inputs
-    ap.add_argument("--T_K", type=float, required=True, help="Temperature [K].")
+    ap.add_argument("--T_K", type=float, help="Temperature [K].")
     ap.add_argument("--sigma_MPa", type=float, required=False,
                     help="Hold stress for creep [MPa] (needed for creep damage).")
     ap.add_argument("--eps_total", type=float, help="Total strain amplitude Δε/2 (LCF).")
@@ -314,6 +314,9 @@ def main() -> None:
             print(out.head())
         return
 
+    if args.T_K is None:
+        raise SystemExit("Temperature --T_K is required when not using batch mode (--csv_in).")
+    
     T_K = float(args.T_K)
 
     # --- Fatigue life Nf ---

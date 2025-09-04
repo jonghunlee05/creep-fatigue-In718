@@ -8,7 +8,7 @@ params:
   k: 14.901213787117845
 fit:
   method: OLS in log10 space
-  date: '2025-09-04T09:29:04Z'
+  date: '2025-09-04T18:40:49Z'
   dataset: data/processed/in718_fatigue_HCF_isothermal_SI.csv
   metrics:
     R2_log10N: 0.6459927789254205

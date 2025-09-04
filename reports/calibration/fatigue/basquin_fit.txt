@@ -1,7 +1,7 @@
 Basquin HCF fit summary (global)
 ================================
 Dataset: data/processed/in718_fatigue_HCF_isothermal_SI.csv
-Date   : 2025-09-04 09:29:04Z (UTC)
+Date   : 2025-09-04 18:40:49Z (UTC)
 
 Model: log10(Nf) = a - k * log10(Sa)
 a = 48.553612
