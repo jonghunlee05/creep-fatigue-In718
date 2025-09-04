@@ -1,0 +1,35 @@
+# Inconel 718 Creep-Fatigue Analysis v1.0 Release Manifest
+# Generated: 2025-01-02
+
+## Python Environment
+Python version: Python 3.9.6
+
+## Package Versions
+matplotlib==3.9.4
+matplotlib-inline==0.1.7
+numpy==1.26.4
+pandas==2.3.2
+scipy==1.13.1
+
+## Git Information
+Commit hash: 8fc4312abb37f786a18d51072e64a0104f2dbee7
+Date: 2025-01-02
+
+## Calibrated Models Included
+- creep/in718_norton.yaml - Norton creep model
+- fatigue/in718_hcf_basquin.yaml - Basquin HCF fatigue model  
+- fatigue/in718_lcf_coffin_manson.yaml - Coffin-Manson LCF fatigue model
+- rupture/in718_rupture_best.yaml - Larson-Miller rupture model
+
+## Test Status
+All 6 unit tests passing:
+- Time fraction prediction monotonicity
+- Zero dwell equals pure fatigue
+- Both creep damage modes (rupture/rate)
+- Parameter range validation
+- Figure generation
+- Basic functionality
+
+## Usage
+This release provides reproducible creep-fatigue life predictions for Inconel 718
+using time-fraction damage accumulation with both fatigue and creep components.
